@@ -1,8 +1,7 @@
 package com.example.bookingtour.controller;
 
-import com.example.bookingtour.Entity.TourEntity;
+import com.example.bookingtour.entity.TourEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
