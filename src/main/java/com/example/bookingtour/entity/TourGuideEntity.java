@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 
-@Entity(name="tour_guide")
+@Entity(name="tour_guides")
 @Data
 public class TourGuideEntity {
     @Id

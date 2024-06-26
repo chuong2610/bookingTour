@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 @Entity(name = "location")
+@Data
 public class LocationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

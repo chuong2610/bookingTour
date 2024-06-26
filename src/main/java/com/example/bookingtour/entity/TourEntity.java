@@ -14,15 +14,13 @@ public class TourEntity {
     private int id;
     @Column(name="name")
     private String name;
-    @Column(name="fullname")
-    private String fullName;
     @Column(name="description")
     private String description;
     @Column(name="duration")
     private String duration;
-    @Column(name="max_participant")
-    private int maxParticipants;
-    @Column(name="current_participant")
+    @Column(name="max_participants")
+    private int maxParticipant;
+    @Column(name="current_participants")
     private int currentParticipant;
     @Column(name="price")
     private double price;
