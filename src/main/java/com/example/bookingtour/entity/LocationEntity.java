@@ -1,9 +1,11 @@
 package com.example.bookingtour.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 @Entity(name = "location")
 public class LocationEntity {
     @Id
