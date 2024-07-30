@@ -14,8 +14,8 @@ public class TourRequest {
     private int maxParticipants;
     private int currentParticipants;
     private double price;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private String startDate;
+    private String endDate;
     private int idLocation;
     private int idTourGuide;
     private String status;

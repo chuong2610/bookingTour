@@ -24,9 +24,9 @@ public class TourEntity {
     private int currentParticipant;
     @Column(name="price")
     private double price;
-    @Column(name="start_date")
+    @Column(name="start_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime startDate;
-    @Column(name="end_date")
+    @Column(name="end_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime endDate;
     @Column(name="status")
     private String status;

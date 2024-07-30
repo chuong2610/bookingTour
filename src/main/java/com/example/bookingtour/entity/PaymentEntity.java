@@ -12,9 +12,11 @@ public class PaymentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name="amount")
-    private int amount;
+    private double amount;
     @Column(name="payment_date")
     private LocalDateTime paymentDate;
+    @Column(name="payment_method")
+    private String paymentMethod;
 
     @ManyToOne
     @JoinColumn(name="id_booking")
