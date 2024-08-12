@@ -1,6 +1,7 @@
 package com.example.bookingtour.controller;
 
 import com.example.bookingtour.dto.Admin_UserDTO;
+import com.example.bookingtour.entity.UserEntity;
 import com.example.bookingtour.payload.request.InsertUserRequest;
 import com.example.bookingtour.payload.response.BaseResponse;
 import com.example.bookingtour.service.imp.UserServiceImp;
@@ -42,6 +43,16 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<?> getAllUserForAdmin(){
         List<Admin_UserDTO> list = userServiceImp.getAllForAdmin();
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setStatusCode(200);
+        baseResponse.setData(list);
+        return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchUsers(@RequestParam(required = false) String keyword)
+    {
+        List<Admin_UserDTO> list = userServiceImp.searchUsers(keyword);
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setStatusCode(200);
         baseResponse.setData(list);

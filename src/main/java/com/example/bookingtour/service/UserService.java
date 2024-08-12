@@ -10,7 +10,9 @@ import com.example.bookingtour.repository.RoleRepository;
 import com.example.bookingtour.repository.UserRepository;
 import com.example.bookingtour.service.imp.FileServiceImp;
 import com.example.bookingtour.service.imp.UserServiceImp;
+import com.example.bookingtour.utils.UserSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -111,6 +113,39 @@ public class UserService implements UserServiceImp {
         });
 
         return adminUserDTOList;
+    }
+
+    @Override
+    public List<Admin_UserDTO> searchUsers(String keyword) {
+        List<Admin_UserDTO> userDTOList = new ArrayList<>();
+
+//        Specification<UserEntity> specification = Specification.where(UserSpecification.hasName(fullname))
+//                .and(UserSpecification.hasEmail(email))
+//                .and(UserSpecification.hasPhone(phone));
+
+        Specification<UserEntity> specification = UserSpecification.containsKeyword(keyword);
+
+        List<UserEntity> listUserEntity = userRepository.findAll(specification);
+
+        if(listUserEntity.isEmpty()){
+            throw new ObjectNotFoundException("Không tìm thấy");
+        } else {
+            listUserEntity.forEach(item -> {
+                Admin_UserDTO userDTO = new Admin_UserDTO();
+                userDTO.setIdUser(item.getId());
+                userDTO.setFullName(item.getFullname());
+                userDTO.setEmail(item.getEmail());
+                userDTO.setPhoneNumber(item.getPhone());
+                RoleEntity roleEntity = new RoleEntity();
+                roleEntity.setName(item.getRole().getName());
+                userDTO.setRoleUser(roleEntity);
+                userDTO.setAvatar("http://localhost:8080/file/" + item.getAvt());
+
+                userDTOList.add(userDTO);
+            });
+        }
+
+        return userDTOList;
     }
 
 }

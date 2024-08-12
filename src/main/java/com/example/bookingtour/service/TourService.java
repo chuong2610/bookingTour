@@ -12,7 +12,11 @@ import com.example.bookingtour.repository.TourRepository;
 import com.example.bookingtour.service.imp.FileServiceImp;
 import com.example.bookingtour.service.imp.TourServiceImp;
 import com.example.bookingtour.utils.DateTimeUtil;
+import com.example.bookingtour.utils.TourSpecification;
+import com.example.bookingtour.utils.UserSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -174,6 +178,62 @@ public class TourService implements TourServiceImp {
         List<TourEntity> tourEntityList = tourRepository.findAll();
         if (tourEntityList.isEmpty()) {
             throw new ObjectNotFoundException("Không tìm thấy bất kỳ thông tin Tour nào");
+        }
+
+        tourEntityList.forEach(item -> {
+            Admin_TourDTO tourDTO = new Admin_TourDTO();
+            tourDTO.setIdTour(item.getId());
+
+            List<String> listImage = new ArrayList<>();
+            item.getListImage().forEach(image -> {
+                listImage.add("http://localhost:8080/file/" + image.getImage());
+            });
+            tourDTO.setListImage(listImage);
+
+            tourDTO.setNameTour(item.getName());
+            tourDTO.setDescriptionTour(item.getDescription());
+            tourDTO.setDurationTour(item.getDuration());
+            tourDTO.setMaxParticipants(item.getMaxParticipant());
+            tourDTO.setCurrentParticipants(item.getCurrentParticipant());
+            tourDTO.setPriceTour(item.getPrice());
+            tourDTO.setStartDate(item.getStartDate());
+            tourDTO.setEndDate(item.getEndDate());
+
+            // Lấy thông tin LocationEntity
+            LocationEntity locationEntity = locationRepository.findById(item.getLocation().getId());
+            tourDTO.setIdLocation(locationEntity.getId());
+            tourDTO.setLocationName(locationEntity.getName());
+            tourDTO.setLocationAddress(locationEntity.getAddress());
+            tourDTO.setLocationCity(locationEntity.getCity());
+            tourDTO.setLocationCountry(locationEntity.getCountry());
+
+            // Lấy thông tin TourGuideEntity
+            TourGuideEntity tourGuideEntity = tourGuideRepository.findById(item.getTourGuide().getId());
+            tourDTO.setIdTourGuide(tourGuideEntity.getId());
+            tourDTO.setTourGuideName(tourGuideEntity.getFullName());
+            tourDTO.setTourGuideLanguage(tourGuideEntity.getLanguage());
+            tourDTO.setTourGuideEmail(tourGuideEntity.getEmail());
+            tourDTO.setTourGuidePhone(tourGuideEntity.getPhone());
+            tourDTO.setTourGuideExp(tourGuideEntity.getExperience());
+            tourDTO.setTourGuideBio(tourGuideEntity.getBio());
+
+            tourDTO.setStatusTour(item.getStatus());
+
+            tourDTOList.add(tourDTO);
+        });
+
+        return tourDTOList;
+    }
+
+    @Override
+    public List<Admin_TourDTO> searchTours(String keyword) {
+        List<Admin_TourDTO> tourDTOList = new ArrayList<>();
+        Specification<TourEntity> specification = TourSpecification.containsKeyword(keyword);
+
+        List<TourEntity> tourEntityList = tourRepository.findAll(specification);
+
+        if (tourEntityList.isEmpty()){
+            throw new ObjectNotFoundException("Không tìm thấy thông tin");
         }
 
         tourEntityList.forEach(item -> {

@@ -48,4 +48,14 @@ public class TourController {
         baseResponse.setData(list);
         return new ResponseEntity<>(baseResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchTours(@RequestParam(required = false) String keyword)
+    {
+        List<Admin_TourDTO> list = tourServiceImp.searchTours(keyword);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setStatusCode(200);
+        baseResponse.setData(list);
+        return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+    }
 }

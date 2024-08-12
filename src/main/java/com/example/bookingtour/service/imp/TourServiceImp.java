@@ -9,7 +9,7 @@ import java.util.List;
 public interface TourServiceImp {
     boolean insertTour(TourRequest tourRequest);
     boolean updateTour(TourRequest request, int id);
-
     List<Admin_TourDTO> getAllTourByAdmin();
+    List<Admin_TourDTO> searchTours(String keyword);
 
 }
